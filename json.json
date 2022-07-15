@@ -4,6 +4,7 @@
   "speed_up": 0,
   "speed_down": 0,
   "time": 0,
-  "traffic": ["TCP", "", "", ""]
+  "traffic": ["TCP", "", "", ""],
+  "geolocation": ""
 }
 
