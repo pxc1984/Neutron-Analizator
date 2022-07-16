@@ -7,10 +7,12 @@ import datetime
 import geocoder
 import folium
 import psutil
-# eel.init('Web')
-# eel.start('main.html', size=(800, 500))
+
+eel.init('Web')
+eel.start('main.html', size=(800, 500))
 
 
+@eel.expose
 def connections():
     cons = [connection[5] for connection in (psutil.net_connections())]
     nons = cons.count('NONE')
@@ -26,6 +28,7 @@ def connections():
     return traffic
 
 
+@eel.expose
 def get_new_speeds():
     speed_test = speedtest.Speedtest()
     speed_test.get_best_server()
@@ -37,12 +40,13 @@ def get_new_speeds():
     upload = speed_test.upload()
 
     # Convert download and upload speeds to megabits per second
-    download_mbs = round(download / (10**6), 2)
-    upload_mbs = round(upload / (10**6), 2)
+    download_mbs = round(download / (10 ** 6), 2)
+    upload_mbs = round(upload / (10 ** 6), 2)
 
     return ping, download_mbs, upload_mbs
 
 
+@eel.expose
 def get_map():
     ip = geocoder.ip("me")
     location = ip.latlng
@@ -53,6 +57,7 @@ def get_map():
     return ip
 
 
+@eel.expose
 def get_info():
     dt = datetime.datetime.now()
     data = {}
@@ -60,7 +65,7 @@ def get_info():
     data["ip"] = socket.gethostbyname(socket.gethostname())
     data["proxy"] = '1'
     data["ping"], data["speed_down"], data["speed_up"] = get_new_speeds()
-    data["time"] = dt.hour*3600 + dt.minute*60 + dt.second
+    data["time"] = dt.hour * 3600 + dt.minute * 60 + dt.second
     data["traffic"] = connections()
     with open('info.json', 'r+') as f:
         json.dump(data, f)
