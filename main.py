@@ -1,4 +1,5 @@
 import requests
+import time
 import eel
 import json
 import socket
@@ -33,8 +34,6 @@ def get_new_speeds():
     speed_test = speedtest.Speedtest()
     speed_test.get_best_server()
 
-    # Get ping (miliseconds)
-    ping = speed_test.results.ping
     # Perform download and upload speed tests (bits per second)
     download = speed_test.download()
     upload = speed_test.upload()
@@ -43,7 +42,7 @@ def get_new_speeds():
     download_mbs = round(download / (10 ** 6), 2)
     upload_mbs = round(upload / (10 ** 6), 2)
 
-    return ping, download_mbs, upload_mbs
+    return download_mbs, upload_mbs
 
 
 @eel.expose
@@ -61,10 +60,9 @@ def get_map():
 def get_info():
     dt = datetime.datetime.now()
     data = {}
-    dt2 = {}
     data["ip"] = socket.gethostbyname(socket.gethostname())
     data["proxy"] = '1'
-    data["ping"], data["speed_down"], data["speed_up"] = get_new_speeds()
+    data["speed_down"], data["speed_up"] = get_new_speeds()
     data["time"] = dt.hour * 3600 + dt.minute * 60 + dt.second
     data["traffic"] = connections()
     with open('info.json', 'r+') as f:
@@ -72,4 +70,9 @@ def get_info():
         f.truncate()
 
 
-get_info()
+if __name__ == '__main__':
+    get_map()
+    run = True
+    while run:
+        get_info()
+        time.sleep(60)
