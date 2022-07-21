@@ -1,0 +1,27 @@
+BODY {
+    background: #1c1b24; /* Цвет фона веб-страницы */
+	color: white
+   }
+ 
+ TABLE {
+    width: 100%; /* Ширина таблицы */
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+    border: 2px double #FFFFFF; /* Рамка вокруг таблицы */
+	border-color: #FFFFFF;
+	height: 100%;
+   }
+ 
+ TD {
+    height: 100px;  
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 2px solid #FFFFFF; /* Параметры рамки */
+    text-align: left; /* Выравнивание по левому краю */
+   }
+ 
+ TH {
+    height: 100px;  
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 2px solid #FFFFFF; /* Параметры рамки */
+    text-align: center; /* Выравнивание по левому краю */
+ }
+ 

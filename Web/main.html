@@ -1,3 +1,124 @@
+<!DOCTYPE html>
 <html>
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fun2sPE7DLiVYAi82a8f1vS%2FNeutron-Analizator%3Fnode-id%3D0%253A1" allowfullscreen></iframe>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script scr="jquery.js"></script>
+<style>
+body {
+  background-color: #1c1b24;
+  color: #13fc03;
+
+}
+.grid_container{
+    display: grid;
+    height: 400px;
+    font-family= 'Quicksand', sans-serif;
+    font-weight:  bold;
+    font-size: 20px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 400px 1fr;
+
+}
+.traffic2356 {
+    
+}
+.SPEED7 {
+    width: 200px;
+}
+.traffic-graffic89 {
+}
+.MAP {
+    width: 700px;
+    height: 300px;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+</style>
+
+</head>
+<body>
+<div class="grid_container">
+    <div id="dt" class="datetime7">
+        
+    </div>
+        <iframe src="map.html" style="width:620px;max-width:740px;height:380px;max-height:380px;background-color:black">
+            
+        </iframe>
+    <div class="traffic2356">
+        <div id="None"class="NON">
+        </div>
+        <div id="TW" class="TIME_WAIT">
+        </div>
+        <div id="List" class="LISTENING">
+        </div>
+        <div id="Est" class="ESTABLISHED">
+        </div>
+    </div>
+    <div id="speed" class="SPEED7">
+        
+    </div>
+    <div id="plot" style="width:100%;max-width:700px;max-height: 400px;padding: 10px;width:600px;height:300px;backface-visibility: 0" class="traffic-graffic89">
+        
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+
+        $("").load("map.html");
+
+    })
+</script>
+<script>
+    // $(function(){
+    //     $("info").load("map.html");
+    // });
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.onload = function() {
+      const obj= JSON.parse(this.responseText);
+      showInfo(obj);
+     };
+     xmlhttp.open("GET", "/info.json");
+     xmlhttp.send();
+
+     function showInfo(obj){
+      // document.getElementById("info").innerHTML=("#includedContent").load("map.html");
+      document.getElementById("speed").innerHTML=obj.speed;
+      document.getElementById("None").innerHTML=obj.traffic.None;
+      document.getElementById("TW").innerHTML=obj.traffic.Time_Wait;
+      document.getElementById("List").innerHTML=obj.traffic.Listen;
+      document.getElementById("Est").innerHTML=obj.traffic.Established;
+      document.getElementById("dt").innerHTML=obj.time;
+        let xArr=[], yArr=[], zArr=[], s="";
+        for( let x in obj.information){
+          xArr.push(obj.information[x].tm);
+          yArr.push(obj.information[x].up);
+          zArr.push(obj.information[x].dn);
+        }
+        let lup={
+        x: xArr,
+        y: yArr,
+        name: "US",
+        type: "scatter"};
+        let ldn={
+        x: xArr,
+        y: zArr,
+        name: "DS",
+        type: "scatter"};
+        let data=[ldn,lup];
+        let layout={title:"График трафика"};
+        Plotly.newPlot("plot",data,layout);
+     }
+
+     var x = setInterval(function() {
+        xmlhttp.open("GET", "/info.json");
+        xmlhttp.send();
+    }
+    , 1000);
+
+</script>
+</body>
 </html>
